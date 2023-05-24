@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UIElements;
 using Random = System.Random;
 
 public class NicksNamesUI : MonoBehaviour
@@ -30,30 +31,34 @@ public class NicksNamesUI : MonoBehaviour
         "Seyu",
         "Teeg"
     };
-
-    private void Start()
-    {
-        var randomIndex = UnityEngine.Random.Range(0, _words.Length);
-        _wordName = _words[randomIndex];
-    }
-
+    
     public void AddPlayer()
     {
+        
         GameObject player = Instantiate(_playerPrefab);
-        player.name = _wordName;
-
-        TextMeshProUGUI nicknamesInstantiate = Instantiate(_nicknamesText,player.transform.position,player.transform.rotation,player.transform);
-        nicknamesInstantiate.text = _wordName;
-        _nicknamesText.text = _wordName;
-        _nicknamesDictionary.Add(player, nicknamesInstantiate);
+        var randomNames = RandomNames();
+        player.name = randomNames;
+        
+        _nicknamesDictionary.Add(player, _nicknamesText);
+        
+        _nicknamesText.text = randomNames;
     }
 
     public void RemovePlayer(GameObject player)
     {
-        if (_nicknamesDictionary.ContainsKey(player))
-        {
-            _nicknamesDictionary.Remove(player);
-        }
+        _nicknamesDictionary.Remove(player, out _nicknamesText);
     }
+    
+    private string RandomNames()
+    {
+        foreach (var t in _words)
+        {
+            var randomIndex = UnityEngine.Random.Range(0,_words.Length);
+            _wordName = _words[randomIndex];
+        }
+        return _wordName;
+    }
+    
+    
 }
 
