@@ -58,7 +58,5 @@ public class NicksNamesUI : MonoBehaviour
         }
         return _wordName;
     }
-    
-    
 }
 
